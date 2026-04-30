@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="CssCadastro.css">
+</head>
+<body class="body">
+    <div class="conteiner">
+        <h1>Cadastro</h1>
+        Nome:  <br>
+        <input placeholder="Digite seu Nome Completo" class="inputs" type="text" id="ipt_nome"><br> <br>
+        Email: <br>
+        <input placeholder="Digite seu Email" class="inputs" type="text" id="ipt_email"><br> <br>
+        Senha: <br>
+        <input placeholder="Digite sua Senha" class="inputs" type="text" id="ipt_senha"><br> <br>
+        Confirmar Senha: <br>
+        <input placeholder="Confirme sua Senha" class="inputs" type="text" id="ipt_confirmar"><br> <br>
+        <button class="button" onclick="cadastrar()">Cadastrar</button>
+    </div>
+</body>
+</html>
+<script>
+    function cadastrar(){
+        let nome = ipt_nome.value
+        let email = ipt_email.value
+        let senha = ipt_senha.value
+        let confirmar = ipt_confirmar.value
+        if(nome == '' || email == '' || senha == '' || confirmar == '' ){
+            alert('Preencha todos os campos')
+        }
+        if(!email.includes('@') || !email.includes('.com')){
+            alert('Email invalido. Verifique se possui @ e .com')
+        }
+        if(senha != confirmar){
+            alert('A senha e a confirmação devem ser iguais.')
+        }
+    }
+</script>
