@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="CssLogin.css">
+</head>
+<body class="body">
+    <div class="conteiner">
+        <div class="bordas">
+        <h1>login</h1>
+        Email: 
+        <input placeholder="Digite seu Email" class="inputs" type="text" id="ipt_email"><br> <br>
+        Senha: 
+        <input placeholder="Digite sua Senha" class="inputs" type="text" id="ipt_senha"><br> <br>
+        <button class="button" onclick="entrar()">Entrar</button>
+        <p>Não possui login? 
+        <a href="cadastro.html" style="color: blue;">Cadastre-se</a>
+    </p>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let tentativas = 0
+    function entrar() {
+    let email = ipt_email.value;
+    let senha = ipt_senha.value;
+    let emailteste = `nicolas@gmail.com`
+    let senhateste = 12345678
+
+    
+    if (email == emailteste && senha == senhateste) {
+        alert("Login realizado com sucesso!")
+        tentativas = 0
+    } 
+    if(tentativas < 3) {
+        tentativas++
+        alert(`Login inválido! Tentativa ${tentativas} de 3`)
+        
+     if (tentativas == 3) {
+            alert("Você foi bloqueado!")
+        }
+    }
+    if (tentativas >= 3) {
+        alert(`Acesso bloqueado!`)
+    }
+}
+</script>
