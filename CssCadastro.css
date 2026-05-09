@@ -1,41 +1,72 @@
+body{
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: rgb(227, 232, 225);
+}
+
 .conteiner{
     display: flex;
     align-items: center;
     flex-direction: column;
     font-size: 25px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    padding: 20px;
-    background-color: rgb(120, 150, 111);
-    min-height: 95vh;
+    
+    
 }
-.inputs{
-    padding: 5px;
-    width: 300px;
-    height: 25px;
-    border-radius: 20px;
-    font-size: 16px;    
+
+.logo{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(227, 232, 225);
+    height: 100px;
 }
-.button{
-    font-size: 30px;
-    border-radius: 20px;
-    padding: 10px;
-    background-color: rgb(229, 229, 229);
-    cursor: pointer;    
-}
-.button:hover{
-    background-color:rgb(164, 169, 159);
-}
-.body{
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-}
+
 .bordas{
     background-color: rgb(160, 206, 157);
     width: 500px;
-    height: 740px;
+    max-width: 90%;
     border-radius: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 30px;
+    box-shadow: 10px 20px 30px rgba(0,0,0,0.15);
+}
+
+.inputs{
+    padding: 8px;
+    width: 350px;
+    max-width: 90%;
+    height: 30px;
+    border-radius: 20px;
+    font-size: 18px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.inputs:focus{
+    outline: none;
+    border: 2px solid rgb(80, 130, 80);
+    transform: scale(1.1);
+}
+
+.button{
+    font-size: 25px;
+    border-radius: 20px;
+    padding: 10px 20px;
+    background-color: rgb(229, 229, 229);
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+
+.button:hover{
+    background-color: rgb(164, 169, 159);
+    transform: scale(1.05);
+}
+
+
+a:hover{
+    text-decoration: underline;
 }
