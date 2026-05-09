@@ -1,7 +1,8 @@
 *{
   margin: 0;
   padding: 0;
-  font-family: Arial;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 /* pagina inteira */
 body {
@@ -108,11 +109,12 @@ body {
 }
 
 
-.conteiner-retangulos {
+.retangulos {
   display: flex;
   gap: 200px;
-  padding: 15px;
+  padding: 10px;
   height: 600px;
+  width: 100%;
   }
 .funcionalidades{
   position: relative;
@@ -120,35 +122,27 @@ body {
   font-size: 60px;
   
 }
-.retangulos {
-  width: 500px;
-  height: 350px;
-  background-color: rgb(180, 174, 174);
-  display: flex;
-  position: relative;
-  top: 140px;
-  right: 320px;
-  border-radius: 20px;
-  align-items: center;
-  flex-direction: column;
-}
-.retangulos h1{
-  position: relative;
-  left: 24px;
-  font-size: 41px;
-}
-.retangulos p{
-  position: relative;
-  left: 16px;
-  top: 40px;
-  font-size: 30px;
-  color:rgb(1, 1, 1);
-  width: 240px;
-}
-
-
-
+.primeiro {
+    width: 600px;
+    height: 400px;
+    background-color: grey;
+    display: flex;
+    position: relative;
+    top: 140px;
+    right: 200px;
+    border-radius: 20px;
+    text-align: center;
+    padding: 10px 20px;
+  }
  
+.texto1 h1 {
+color: white;
+font-size: 30px;
 
+}
+.texto1 p {
+color: white;
+font-size: 20px;
+}
 
 
