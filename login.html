@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="CssLogin.css">
+    <link rel="stylesheet" href="css/CssLogin.css">
 </head>
 <body class="body">
+    <div class="logo">
+    <img src="https://svgsilh.com/svg_v2/296813.svg" alt="">
+    </div>
     <div class="conteiner">
         <div class="bordas">
         <h1>login</h1>
@@ -16,7 +19,9 @@
         <input placeholder="Digite sua Senha" class="inputs" type="text" id="ipt_senha"><br> <br>
         <button class="button" onclick="entrar()">Entrar</button>
         <p>Não possui login? 
-        <a href="cadastro.html" style="color: blue;">Cadastre-se</a>
+        <a href="cadastro.html" style="color: blue;">Cadastre-se</a> <br><br>
+        Ir para página home 
+        <a href="index.html" style="color: blue;">Home</a>
     </p>
         </div>
     </div>
@@ -47,4 +52,65 @@
         alert(`Acesso bloqueado!`)
     }
 }
+  
+
+
+
+ function entrar() {
+        
+
+        var emailVar = ipt_email.value;
+        var senhaVar = ipt_senha.value;
+
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    
+
+                    setTimeout(function () {
+                        window.location = "dashboard.html";
+                    }, 1000);
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+
 </script>
