@@ -28,39 +28,9 @@
 </body>
 </html>
 <script>
-    let tentativas = 0
-    function entrar() {
-    let email = ipt_email.value;
-    let senha = ipt_senha.value;
-    let emailteste = `nicolas@gmail.com`
-    let senhateste = 12345678
-
-    
-    if (email == emailteste && senha == senhateste) {
-        alert("Login realizado com sucesso!")
-        tentativas = 0
-    } 
-    if(tentativas < 3) {
-        tentativas++
-        alert(`Login inválido! Tentativa ${tentativas} de 3`)
-        
-     if (tentativas == 3) {
-            alert("Você foi bloqueado!")
-        }
-    }
-    if (tentativas >= 3) {
-        alert(`Acesso bloqueado!`)
-    }
-}
-  
-
-
-
  function entrar() {
-        
-
-        var emailVar = ipt_email.value;
-        var senhaVar = ipt_senha.value;
+    var emailVar = ipt_email.value;
+    var senhaVar = ipt_senha.value;
 
 
         console.log("FORM LOGIN: ", emailVar);
@@ -91,7 +61,7 @@
 
                     setTimeout(function () {
                         window.location = "dashboard.html";
-                    }, 1000);
+                    }, 1000); 
 
                 });
 
