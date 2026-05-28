@@ -4,47 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="CssCadastro.css">
+    <link rel="stylesheet" href="css/CssCadastro.css">
 </head>
 <body class="body">
+    <div class="logo">
+    <img src="https://svgsilh.com/svg_v2/296813.svg" alt="">
+    </div>
     <div class="conteiner">
         <div class="bordas">
         <h1>Cadastro</h1>
         Nome:  <br>
+        <span id="erro_nome"></span>
         <input placeholder="Digite seu Nome Completo" class="inputs" type="text" id="ipt_nome"><br> <br>
         Email: 
+        <span id="erro_email"></span>
         <input placeholder="Digite seu Email" class="inputs" type="text" id="ipt_email"><br> <br>
         Senha: 
+        <span id="erro_senha"></span>
         <input placeholder="Digite sua Senha" class="inputs" type="text" id="ipt_senha"><br> <br>
         Confirmar Senha: 
-        <input placeholder="Confirme sua Senha" class="inputs" type="text" id="ipt_confirmar"><br> <br>
+        <span id="erro_confirmar"></span>
+        <input placeholder="Confirme sua Senha" class="inputs" type="text" id="ipt_confirmar"> <br>
         <button class="button" onclick="cadastrar()">Cadastrar</button>
         <p>Já possui login? 
-        <a href="login.html" style="color: blue;">Entrar</a>
+        <a href="login.html" style="color: blue;">Entrar</a>  <br><br>
+        Ir para página home 
+        <a href="index.html" style="color: blue;">Home</a>
         </p>
+        <span id="mensagem_erro"></span>
         </div>
     </div>
 </body>
 </html>
 <script>
-    let usuarios = []
-    function cadastrar(){
-        let nome = ipt_nome.value
-        let email = ipt_email.value
-        let senha = ipt_senha.value
-        let confirmar = ipt_confirmar.value
-        if(nome == '' || email == '' || senha == '' || confirmar == '' ){
-            alert('Preencha todos os campos')
-        }
-        if(!email.includes('@') || !email.includes('.com')){
-            alert('Email invalido. Verifique se possui @ e .com')
-        }
-        if(senha != confirmar){
-            alert('A senha e a confirmação devem ser iguais.')
-        }
-        usuarios.push(nome)
-        usuarios.push(email)
-        usuarios.push(senha)
+   let usuarios = []
 
+function cadastrar(){
+
+    var nomeVar = ipt_nome.value
+    var emailVar = ipt_email.value
+    var senhaVar = ipt_senha.value
+    let confirmar = ipt_confirmar.value
+
+    let temArroba = false
+    let temPontoCom = false
+
+    for (let i = 0; i < emailVar.length; i++) {
+
+        if (emailVar[i] == "@") {
+            temArroba = true;
+        }
+
+        if (emailVar.includes(`.com`)) {
+            temPontoCom = true;
+        }
     }
+
+    if (!temArroba || !temPontoCom) {
+        alert("Email inválido");
+        return false;
+    }
+    let temMaiuscula = false;
+    let temNumero = false;
+
+    for (let i = 0; i < senhaVar.length; i++) {
+        if (senhaVar[i] >= "A" && senhaVar[i] <= "Z") {
+            temMaiuscula = true;
+        }
+
+        if (senhaVar[i] >= "0" && senhaVar[i] <= "9") {
+            temNumero = true;
+        }
+    }
+    if (!temMaiuscula || !temNumero) {
+        alert("A senha precisa ter pelo menos 1 letra maiúscula e 1 número");
+        return false;
+    }
+
+    if (senhaVar != confirmar) {
+        alert("As senhas não coincidem");
+        return false;
+    }
+    
+     mensagem_erro.innerHTML = ``
+
+     fetch("/usuarios/cadastrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // crie um atributo que recebe o valor recuperado aqui
+        // Agora vá para o arquivo routes/usuario.js
+        nomeServer: nomeVar,
+        emailServer: emailVar,
+        senhaServer: senhaVar,
+      }),
+    })
+    .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+          cardErro.style.display = "block";
+
+          mensagem_erro.innerHTML =
+            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+          setTimeout(() => {
+            window.location = "login.html";
+          }, "2000");
+
+          limparFormulario();
+          finalizarAguardar();
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+        finalizarAguardar();
+      });
+
+    return false;
+  }
+
+   
+  
+
 </script>
