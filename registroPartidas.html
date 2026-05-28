@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/registrar.css">
+</head>
+<body>
+    
+</body>
+<div class="navbar">
+  <div class="logo">
+    <h1>Tênis Tracker</h1>
+    <img  src="https://svgsilh.com/svg_v2/296813.svg" class="logo">
+  </div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="login.html">Sair</a> 
+  </div>
+</div>
+<div class="container">
+  
+  <h1>Registrar Partida</h1>
+  <p>Preencha os dados da sua partida para acompanhar seu desempenho</p>
+  
+  <div class="retangulos">
+    <h2>Dados da Partida</h2>
+    
+    <div class="linha">
+      <div>
+        Data
+        <input id="ipt_data" type="date">
+      </div>
+      
+      <div>
+        Adversário
+        <input id="ipt_adversario" type="text">
+      </div>
+      
+
+    </div>
+    
+    <div class="linha">
+      <div>
+        Tipo
+        <select id="select_tipo">
+          <option>Selecione</option>
+          <option value="torneio">Torneio</option>
+          <option value="treino">Treino</option>
+        </select>
+      </div>
+      
+      <div>
+        Resultado
+        <select id="select_resultado">
+          <option>Selecione</option>
+          <option value="vitoria">Vitória</option>
+          <option value="derrota">Derrota</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="retangulos">
+    <h2>Placar (Sets)</h2>
+    
+    <div class="sets">
+      <div>Set 1: <input id="ipt_set1usu"> x <input id="ipt_set1adv"></div>
+      <div>Set 2: <input id="ipt_set2usu"> x <input id="ipt_set2adv"></div>
+      <div>Set 3: <input id="ipt_set3usu"> x <input id="ipt_set3adv"></div>
+    </div>
+  </div>
+  
+  
+  <button onclick="salvarPartida()">Salvar Partida</button>
+  
+</div>
+</html>
+<script>
+  function salvarPartida(){
+    var dataVar = ipt_data.value;
+    var adversarioVar = ipt_adversario.value;
+    var tipoVar = select_tipo.value;
+    var resultadoVar = select_resultado.value;
+    var set1UsuarioVar = ipt_set1usu.value;
+    var set2UsuarioVar = ipt_set2usu.value;
+    var set3UsuarioVar = ipt_set3usu.value;
+    var set1AdvVar = ipt_set1adv.value;
+    var set2AdvVar = ipt_set2adv.value;
+    var set3AdvVar = ipt_set3adv.value;
+
+
+    fetch("/partidas/salvar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            dataServer: dataVar,
+            adversarioServer: adversarioVar,
+            tipoServer: tipoVar,
+            resultadoServer: resultadoVar,
+            set1UsuarioServer: set1UsuarioVar,
+            set1AdvServer: set1AdvVar,
+            set2UsuarioServer: set2UsuarioVar,
+            set2AdvServer: set2AdvVar,
+            set3UsuarioServer: set3UsuarioVar,
+            set3AdvServer: set3AdvVar
+        })
+    })
+    .then(function(resposta) {
+
+        if(resposta.ok) {
+            alert("Partida salva!");
+        }
+
+    })
+    .catch(function(erro) {
+        console.log(erro);
+    });
+
+}
+
+  
+</script>

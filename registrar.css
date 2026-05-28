@@ -1,0 +1,95 @@
+body {
+    background-color: #f2f2f2;
+    margin: 0;
+    font-family: Arial;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.retangulos {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.linha {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.linha div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+
+.sets div {
+    margin: 10px 0;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background: green;
+    color: white;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.navbar{
+    background-color: #1acb6a;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.logo{
+    width: 100px;
+}
+.menu{
+    display: flex;
+    gap: 20px;
+}
+.menu a{
+    background-color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+.logo{
+    display: flex;
+    gap: 15px;
+}
+.logo h1{
+    color: rgb(0, 0, 0);
+    font-size: 45px;
+}

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="css/dash.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="navbar">
+   <div class="logo">
+     <h1>Tênis Tracker</h1>
+      <img  src="https://svgsilh.com/svg_v2/296813.svg" class="logo">
+    </div>
+   <div class="menu">
+     <a href="index.html">Home</a>
+        <a href="registroPartidas.html">Registrar Partidas</a>
+        <a href="login.html">Sair</a>
+    </div>
+</div>
+
+<div class="container">
+  <h1>Dashboard</h1>
+  <p class="sub">Resumo do seu desempenho</p>
+
+  <div class="kpis">
+    <div class="retangulos">
+      <h3>Total de Partidas</h3>
+      <p id="total"></p>
+    </div>
+
+    <div class="retangulos">
+      <h3>Vitórias</h3>
+      <p id="vitorias"></p>
+    </div>
+
+    <div class="retangulos">
+      <h3>Derrotas</h3>
+      <p id="derrotas"></p>
+    </div>
+
+    <div class="retangulos">
+      <h3>Taxa de Vitória</h3>
+      <p id="taxa"></p>  
+    </div>
+  </div>
+
+
+  <div class="graficos">
+
+    <div class="retangulos grafico">
+      <div class="grafico_linha">
+      <h3>Desempenho</h3>
+      <canvas id="linhaChart"></canvas>
+      </div>
+    </div>
+
+    <div class="retangulos grafico">
+      <h3>Vitórias vs Derrotas</h3>
+      <canvas id="pizzaChart"></canvas>
+    </div>
+
+  </div>
+
+
+  <div class="historico">
+    <h2>Últimas partidas</h2>
+    <div class="linha"><b>Data</b><b>Adversário</b> <b>Tipo de jogo</b><b> 1º Set</b><b> 2º Set</b><b> 3º Set</b><b>Resultado</b></div>
+    <div class="linha"><span>10/06</span><span>João</span> <span>Treino</span><span> 6 x 2</span><span> 6 x 5</span><span> 0 x 0</span><span class="v">Vitória</span></div>
+    <div class="linha"><span>08/06</span><span>Carlos</span><span>Torneio</span><span> 5 x 7</span><span> 2 x 6</span><span> 0 x 0</span><span class="d">Derrota</span></div>
+    <div class="linha"><span>02/06</span><span>Larissa</span><span>Treino</span><span> 6 x 0</span><span> 6 x 1</span><span> 0 x 0</span><span class="v">Vitória</span></div>
+</div>
+<div style="color: green;"></div>
+ 
+</body>
+</html>
+
+<script>
+  
+
+
+
+function obterDadosGrafico() {
+
+    fetch("/dashboard/graficoLinha", {cache: 'no-store'}).then(function (response) {
+        if (response.ok) {
+            response.json()
+            .then(function (resposta) {
+                console.log(
+                    `Dados recebidos: ${JSON.stringify(resposta)}`
+                );
+                plotarGrafico(resposta);
+            });
+        } else {
+            console.error(
+                'Nenhum dado encontrado ou erro na API'
+            );
+        }
+    })
+    .catch(function (error) {
+        console.error(
+            `Erro na obtenção dos dados p/ gráfico: ${error.message}`
+        );
+    });
+
+}
+
+
+
+
+
+
+function plotarGrafico(resposta) {
+
+    console.log('Iniciando plotagem do gráfico...');
+    let labels = [];
+    let dados = {
+        labels: labels,
+        datasets: [{
+            label: "Desempenho",
+            data: [],
+            borderColor: "green",
+        }]
+    };
+
+    console.log('Dados recebidos:');
+    console.log(resposta);
+    var vitorias = 0;
+    for (var i = 0; i < resposta.length; i++) {
+        var registro = resposta[i];
+        labels.push(registro.dataPartida);
+        if (registro.resultado == "vitoria") {
+            vitorias++;
+        }
+
+        var taxa =
+        (vitorias / (i + 1)) * 100;
+        dados.datasets[0].data.push(
+            Number(taxa.toFixed(0))
+        );
+    }
+
+    console.log('Labels:');
+    console.log(labels);
+    console.log('Dados:');
+    console.log(dados.datasets);
+
+    const config = {
+        type: "line",
+        data: dados,
+        options: {
+            scales: {
+                y: {
+                    min: 0,
+                    max: 100
+                }
+            }
+        }
+    };
+
+    let myChart = new Chart(
+        document.getElementById("linhaChart"),config
+    );
+
+    setTimeout(function () {
+        atualizarGrafico(
+            dados,
+            myChart
+        );
+    }, 2000);
+}
+
+
+
+
+
+
+function atualizarGrafico(dados, myChart) {
+    fetch("/dashboard/graficoLinha", { cache: 'no-store'}) .then(function (response) {
+        if (response.ok) {
+            response.json().then(function (novoRegistro) {
+                console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                console.log('Dados atuais do gráfico:');
+                console.log(dados);
+
+                var ultimoRegistro = novoRegistro[novoRegistro.length - 1];
+
+                var ultimaDataGrafico = dados.labels[dados.labels.length - 1];
+                if (ultimoRegistro.dataPartida == ultimaDataGrafico) {
+                    console.log("Nenhum dado novo encontrado");
+                } else {
+                    dados.labels.push( ultimoRegistro.dataPartida);
+                    var vitorias = 0;
+                    for ( var i = 0; i < novoRegistro.length; i++) {
+                        if (novoRegistro[i].resultado == "vitoria") {
+                          vitorias++;
+                        }
+                    }
+                    var taxa =
+                    (vitorias / novoRegistro.length)* 100;
+                    dados.datasets[0].data.push(Number(taxa.toFixed(0)));
+                    myChart.update();
+
+                }
+
+                setTimeout(function () {
+                    atualizarGrafico(
+                        dados,
+                        myChart
+                    );
+                }, 2000);
+            });
+        } else {
+            console.error(
+                'Nenhum dado encontrado ou erro na API'
+            );
+            setTimeout(function () {
+                atualizarGrafico(
+                    dados,
+                    myChart
+                );
+            }, 2000);
+        }
+    })
+
+    .catch(function (error) {
+        console.error(
+            `Erro na obtenção dos dados p/ gráfico: ${error.message}`
+        );
+    });
+}
+
+
+obterDadosGrafico();
+
+
+
+
+fetch("/dashboard/kpis")
+            .then(res => res.json())
+            .then(resposta => {
+
+                var dados = resposta[0];
+                var vitorias =Number(dados.vitorias);
+                var derrotas =Number(dados.derrotas);
+                var total =vitorias + derrotas;
+                var taxa =((vitorias / total) * 100).toFixed();
+
+                document.getElementById("total").innerText = total;
+                document.getElementById("vitorias").innerText = vitorias;
+                document.getElementById("derrotas").innerText = derrotas;
+                document.getElementById("taxa").innerText = `${taxa}%`;
+            })
+            .catch(erro => {
+                console.log(erro);
+            });
+
+
+function obterDadosPizza() {
+    fetch("/dashboard/pizza", {cache: 'no-store'}).then(function (response) {
+        if (response.ok) {
+            response.json()
+            .then(function (resposta) {
+                console.log(
+                    "Dados pizza:",
+                    resposta
+                );
+                plotarGraficoPizza(
+                    resposta
+                );
+            });
+        } else {console.error("Erro ao buscar dados da pizza" );
+        }
+    })
+    .catch(function (erro) {
+        console.log(erro);
+    });
+}
+
+
+function plotarGraficoPizza(resposta) {
+    var dados = resposta[0];
+    var vitorias = Number(dados.vitorias);
+    var derrotas = Number(dados.derrotas);
+    new Chart(
+        document.getElementById("pizzaChart" ), {
+            type: "pie",
+            data: {
+                labels: [
+                    "Vitórias",
+                    "Derrotas"
+                ],
+                datasets: [{
+                    data: [
+                        vitorias
+                        ,derrotas
+                     ]
+                }]
+            }
+        }
+    );
+}
+
+
+obterDadosPizza();
+</script>
